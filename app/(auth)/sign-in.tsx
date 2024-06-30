@@ -1,50 +1,86 @@
 import { Alert, Image, ScrollView, StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { images } from "../../constants";
 import FormField from "../components/FormField";
 import { Link, router } from "expo-router";
 import CustomButton from "../components/CustomButton";
-import { getCurrentUser, signIn, closeSession } from "@/lib/appwrite";
+import { getCurrentUser, signInWithVoice, closeSession } from "@/lib/appwrite";
 
 import { useGlobalContext } from "@/context/GlobalProvider";
+import { Audio } from "expo-av";
 
 const SignIn = () => {
   const [form, setForm] = useState({
     email: "",
-    password: "",
   });
 
   const { setIsLoggedIn, setUser } = useGlobalContext();
-  const [isSsubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
 
-  const submit = async () => {
-    if (!form.email || !form.password) {
-      Alert.alert("Error", "Please fill all fields");
-      return;
-    }
-    setIsSubmitting(true);
+  // Define the type for the recording ref
+  const recording = useRef<Audio.Recording | null>(null);
 
+  const startRecording = async () => {
     try {
-      await signIn(form.email.trim(), form.password.trim());
-      const result = await getCurrentUser();
+      const permission = await Audio.requestPermissionsAsync();
+      if (permission.status === "granted") {
+        await Audio.setAudioModeAsync({
+          allowsRecordingIOS: true,
+          playsInSilentModeIOS: true,
+        });
+        const { recording: newRecording } = await Audio.Recording.createAsync(
+          Audio.RecordingOptionsPresets.HIGH_QUALITY
+        );
+        recording.current = newRecording;
+        setIsRecording(true);
+      } else {
+        Alert.alert("Permission to access microphone is required!");
+      }
+    } catch (err) {
+      console.error("Failed to start recording", err);
+    }
+  };
 
+  const stopRecording = async () => {
+    setIsRecording(false);
+    if (recording.current) {
+      await recording.current.stopAndUnloadAsync();
+      const uri = recording.current.getURI();
+      if (uri) {
+        handleVoiceSubmit(uri);
+      }
+    }
+  };
+
+  const handleVoiceSubmit = async (uri: string) => {
+    setIsSubmitting(true);
+    try {
+      await signInWithVoice(form.email.trim(), uri);
+      const result = await getCurrentUser();
       if (result) {
         setUser(result);
         setIsLoggedIn(true);
         router.replace("/home");
       } else {
-        Alert.alert("Error", "Invalid email or password");
+        Alert.alert("Error", "Invalid email or voice");
       }
     } catch (error: any) {
-      Alert.alert(
-        "Error",
-        (error.message.split(":")[1] + error.message.split(":")[2]).trim()
-      );
+      Alert.alert("Error", error.message);
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  const submit = async () => {
+    if (!form.email) {
+      Alert.alert("Error", "Please enter your email");
+      return;
+    }
+    startRecording();
+  };
+
   return (
     <SafeAreaView className="bg-primary h-full">
       <ScrollView>
@@ -64,18 +100,12 @@ const SignIn = () => {
             otherStyles="mt-7"
             keyBoardType="email-address"
           />
-          <FormField
-            title="Password"
-            value={form.password}
-            handleChangeText={(e) => setForm({ ...form, password: e })}
-            otherStyles="mt-7"
-          />
         </View>
         <CustomButton
-          title="Sign In"
-          handlePress={submit}
+          title={isRecording ? "Stop Recording" : "Start Recording"}
+          handlePress={isRecording ? stopRecording : submit}
           containerStyles="mt-7"
-          isLoading={isSsubmitting}
+          isLoading={isSubmitting}
         />
         <View className="justify-center flex-row gap-2 pt-5 items-center">
           <Text className="text-lg font-pregular text-gray-100">
