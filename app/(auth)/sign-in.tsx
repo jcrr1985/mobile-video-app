@@ -5,21 +5,18 @@ import { images } from "../../constants";
 import FormField from "../components/FormField";
 import { Link, router } from "expo-router";
 import CustomButton from "../components/CustomButton";
-import { getCurrentUser, signInWithVoice, closeSession } from "@/lib/appwrite";
-
-import { useGlobalContext } from "@/context/GlobalProvider";
+import { signInWithEmailAndVoice } from "../../lib/appwrite";
 import { Audio } from "expo-av";
+import { useGlobalContext } from "@/context/GlobalProvider";
 
 const SignIn = () => {
-  const [form, setForm] = useState({
-    email: "",
-  });
-
   const { setIsLoggedIn, setUser } = useGlobalContext();
+  const [form, setForm] = useState({
+    username: "",
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
 
-  // Define the type for the recording ref
   const recording = useRef<Audio.Recording | null>(null);
 
   const startRecording = async () => {
@@ -52,20 +49,16 @@ const SignIn = () => {
         handleVoiceSubmit(uri);
       }
     }
+    Alert.alert("Stopped recording!");
   };
 
   const handleVoiceSubmit = async (uri: string) => {
     setIsSubmitting(true);
     try {
-      await signInWithVoice(form.email.trim(), uri);
-      const result = await getCurrentUser();
-      if (result) {
-        setUser(result);
-        setIsLoggedIn(true);
-        router.replace("/home");
-      } else {
-        Alert.alert("Error", "Invalid email or voice");
-      }
+      const user = await signInWithEmailAndVoice(form.username.trim(), uri);
+      setUser(user);
+      setIsLoggedIn(true);
+      router.push("/home"); // Redirige a la pantalla principal
     } catch (error: any) {
       Alert.alert("Error", error.message);
     } finally {
@@ -74,8 +67,8 @@ const SignIn = () => {
   };
 
   const submit = async () => {
-    if (!form.email) {
-      Alert.alert("Error", "Please enter your email");
+    if (!form.username) {
+      Alert.alert("Error", "Please enter your user name");
       return;
     }
     startRecording();
@@ -86,17 +79,17 @@ const SignIn = () => {
       <ScrollView>
         <View className="w-full justify-center px-4 my-6">
           <Image
-            source={images.logo}
+            source={images.veonLogo}
             resizeMode="contain"
             className="w-[115px] h-[35px]"
           />
-          <Text className="text-2xl text-white text-semibold mt-10 font-psmibold">
+          <Text className="text-2xl text-white text-semibold mt-10 font-bold">
             Sign In
           </Text>
           <FormField
-            title="Email"
-            value={form.email}
-            handleChangeText={(e) => setForm({ ...form, email: e })}
+            title="Your User Name"
+            value={form.username}
+            handleChangeText={(e) => setForm({ ...form, username: e })}
             otherStyles="mt-7"
             keyBoardType="email-address"
           />
@@ -113,7 +106,8 @@ const SignIn = () => {
           </Text>
           <Link
             href="/sign-up"
-            className="text-sm font-psemibold text-secondary "
+            className="text-sm font-psemibold"
+            style={{ color: "#F6CA56" }}
           >
             Sign up
           </Link>

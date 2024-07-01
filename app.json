@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "aora",
-    "slug": "aora",
+    "name": "irapp",
+    "slug": "irapp",
     "version": "1.0.0",
     "screenOrientation": {
       "allowed": ["portrait", "landscape"]
@@ -20,9 +20,9 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff",
-        "package": "com.julio.aora"
+        "package": "com.julio.irapp"
       },
-      "package": "com.aora"
+      "package": "com.irapp"
     },
     "web": {
       "bundler": "metro",

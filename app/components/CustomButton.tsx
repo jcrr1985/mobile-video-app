@@ -2,6 +2,8 @@ import { StyleSheet, Text } from "react-native";
 import React from "react";
 import { TouchableOpacity } from "react-native";
 
+import { Colors } from "../../constants/Colors";
+
 type ButtonProps = {
   title: string;
   handlePress: () => void;
@@ -24,10 +26,9 @@ const Button: React.FC<ButtonProps> = ({
       className={`bg-secondary rounded-xl min-h-[62px] justify-center items-center ${containerStyles} ${
         isLoading ? "opacity-50" : ""
       }`}
+      style={{ backgroundColor: "#F6CA56" }}
     >
-      <Text className={`font-psemibold  text-primary text-lg ${textStyles}`}>
-        {title}
-      </Text>
+      <Text className={`font-psemibold text-lg ${textStyles}`}>{title}</Text>
     </TouchableOpacity>
   );
 };
