@@ -1,0 +1,303 @@
+{
+	"info": {
+		"_postman_id": "33d30428-c64c-42fb-b954-eca5f82e58ff",
+		"name": "Veon Auth API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10690799",
+		"_collection_link": "https://grey-zodiac-825927.postman.co/workspace/Team-Workspace~89e03227-4c24-4466-88cc-24e4375e6e6e/collection/28723967-33d30428-c64c-42fb-b954-eca5f82e58ff?action=share&source=collection_link&creator=10690799"
+	},
+	"item": [
+		{
+			"name": "v1",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  auth {\r\n    login(username: \"webmaster10\", password: \"webmaster10\") {\r\n      ... on UserAuth {\r\n        id\r\n        username\r\n        access_token\r\n        status\r\n      }\r\n      ... on ValidationErrorsList {\r\n        errors {\r\n          field\r\n          messages\r\n        }\r\n      }\r\n    }\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://verifyapi.vdev.website/authorization/v1/login",
+							"protocol": "https",
+							"host": [
+								"verifyapi",
+								"vdev",
+								"website"
+							],
+							"path": [
+								"authorization",
+								"v1",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "auth",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  auth {\r\n    sign_up(email: \"webmaster10@gmail.com\", username: \"webmaster10\", password: \"webmaster10\" password_confirm: \"webmaster10\") {\r\n      ... on UserAuth {\r\n        id\r\n        username\r\n        access_token\r\n      }\r\n      ... on ValidationErrorsList {\r\n        errors {\r\n          field\r\n          messages\r\n        }\r\n      }\r\n    }\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://verifyapi.vdev.website/authorization/v1/login",
+							"protocol": "https",
+							"host": [
+								"verifyapi",
+								"vdev",
+								"website"
+							],
+							"path": [
+								"authorization",
+								"v1",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "audio compared",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "fDegFL-VhZ1mjo6dM6ceMIdrgUMouaf8tWFK4yRM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  auth {\r\n    verify_audio\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://verifyapi.vdev.website/authorization/v1/auth",
+							"protocol": "https",
+							"host": [
+								"verifyapi",
+								"vdev",
+								"website"
+							],
+							"path": [
+								"authorization",
+								"v1",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "upload audio file",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "fDegFL-VhZ1mjo6dM6ceMIdrgUMouaf8tWFK4yRM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "https://verifyapi.vdev.website/authorization/v1/upload",
+							"protocol": "https",
+							"host": [
+								"verifyapi",
+								"vdev",
+								"website"
+							],
+							"path": [
+								"authorization",
+								"v1",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "v2",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  auth {\r\n    login(username: \"webmaster11\", password: \"webmaster11\") {\r\n      ... on UserAuth {\r\n        id\r\n        username\r\n        access_token\r\n        status\r\n      }\r\n      ... on ValidationErrorsList {\r\n        errors {\r\n          field\r\n          messages\r\n        }\r\n      }\r\n    }\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://verifyapi.vdev.website/authorization/v2/login",
+							"protocol": "https",
+							"host": [
+								"verifyapi",
+								"vdev",
+								"website"
+							],
+							"path": [
+								"authorization",
+								"v2",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "auth",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  auth {\r\n    sign_up(email: \"webmaster11@gmail.com\", username: \"webmaster11\", password: \"webmaster11\" password_confirm: \"webmaster11\") {\r\n      ... on UserAuth {\r\n        id\r\n        username\r\n        access_token\r\n      }\r\n      ... on ValidationErrorsList {\r\n        errors {\r\n          field\r\n          messages\r\n        }\r\n      }\r\n    }\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://verifyapi.vdev.website/authorization/v2/login",
+							"protocol": "https",
+							"host": [
+								"verifyapi",
+								"vdev",
+								"website"
+							],
+							"path": [
+								"authorization",
+								"v2",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "upload audio file",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "gJZxhZagEvp1FeoKcUVUHuRklXdaZRSEsyM1UXUn",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "w-dAa3wv6/speaker2_file.wav"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://verifyapi.vdev.website/authorization/v2/upload",
+							"protocol": "https",
+							"host": [
+								"verifyapi",
+								"vdev",
+								"website"
+							],
+							"path": [
+								"authorization",
+								"v2",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "upload main audio file",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "XRB_JZaNftEGfzdrWZ6DNsxNxQADB4FI4zTUmYi3",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "EgghlwN8d/speaker2_file.wav"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://verifyapi.vdev.website/authorization/v2/upload/main",
+							"protocol": "https",
+							"host": [
+								"verifyapi",
+								"vdev",
+								"website"
+							],
+							"path": [
+								"authorization",
+								"v2",
+								"upload",
+								"main"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -16,6 +16,7 @@ type InputProps = {
   otherStyles?: string;
   placeholder?: string;
   keyBoardType?: string;
+  secureTextEntry?: boolean;
 };
 
 const FormField: React.FC<InputProps> = ({
@@ -24,6 +25,7 @@ const FormField: React.FC<InputProps> = ({
   handleChangeText,
   otherStyles,
   placeholder,
+  secureTextEntry,
   ...props
 }) => {
   const [showPassword, setShowPassword] = useState(false);

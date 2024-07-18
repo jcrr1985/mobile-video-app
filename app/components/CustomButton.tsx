@@ -10,6 +10,7 @@ type ButtonProps = {
   containerStyles?: object | string;
   textStyles?: object | string;
   isLoading?: boolean;
+  disabled?: boolean;
 };
 
 const Button: React.FC<ButtonProps> = ({
@@ -18,6 +19,7 @@ const Button: React.FC<ButtonProps> = ({
   containerStyles,
   textStyles,
   isLoading,
+  disabled,
 }) => {
   return (
     <TouchableOpacity
@@ -27,6 +29,7 @@ const Button: React.FC<ButtonProps> = ({
         isLoading ? "opacity-50" : ""
       }`}
       style={{ backgroundColor: "#F6CA56" }}
+      disabled={disabled}
     >
       <Text className={`font-psemibold text-lg ${textStyles}`}>{title}</Text>
     </TouchableOpacity>
